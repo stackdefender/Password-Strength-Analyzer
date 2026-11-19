@@ -178,4 +178,4 @@ node test_analyzer.js
 3. **Zero-Knowledge Architecture:** Engineering client-side applications that evaluate sensitive user data without exposing it to the network or persistent storage.
 4. **Defensive Engineering:** Formulating actionable recommendations, teaching users about password managers, passphrases, and multi-factor authentication (2FA/FIDO2).
 
-Your site is live at https://stackdefender.github.io/Password-Strength-Analyzer/
+Your site is live at: https://stackdefender.github.io/Password-Strength-Analyzer/
