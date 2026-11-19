@@ -177,3 +177,5 @@ node test_analyzer.js
 2. **Web Cryptography:** Hands-on implementation of the W3C Web Crypto API (`window.crypto.getRandomValues`) for CSPRNG generation without modulo bias.
 3. **Zero-Knowledge Architecture:** Engineering client-side applications that evaluate sensitive user data without exposing it to the network or persistent storage.
 4. **Defensive Engineering:** Formulating actionable recommendations, teaching users about password managers, passphrases, and multi-factor authentication (2FA/FIDO2).
+
+Your site is live at https://stackdefender.github.io/Password-Strength-Analyzer/
