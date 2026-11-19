@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Professional Password Strength Analyzer and Cryptographic Password Generator - College Cybersecurity Project">
+  <title>CyberSec | Password Strength Analyzer & Security Auditor</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Background Glow & Grid Effect -->
+  <div class="cyber-grid-overlay" aria-hidden="true"></div>
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="cyber-header">
+    <div class="container header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>PASSWORD STRENGTH ANALYZER</h1>
+          <span class="brand-tagline">Cybersecurity Audit & Entropy Evaluation Engine</span>
+        </div>
+      </div>
+      <div class="header-status">
+        <div class="status-pill secure">
+          <span class="status-dot"></span>
+          <span>Zero-Knowledge (Client-Side Only)</span>
+        </div>
+        <button id="reset-app-btn" class="cyber-btn btn-secondary btn-sm" title="Reset all input fields and analyzer state">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- Privacy Banner -->
+    <section class="privacy-banner" aria-label="Privacy Notice">
+      <div class="privacy-icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div class="privacy-text">
+        <strong>Privacy Assurance:</strong> 100% Client-Side Evaluation. Passwords are never transmitted across the network, stored in cookies, logged to console, or written to persistent storage (localStorage/sessionStorage). All entropy metrics run strictly in temporary browser memory.
+      </div>
+    </section>
+
+    <!-- Top Grid: Input & Live Meter -->
+    <div class="dashboard-grid top-section">
+
+      <!-- Left Card: Password Input Console -->
+      <section class="cyber-card input-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+            </svg>
+            <h2>PASSWORD INPUT CONSOLE</h2>
+          </div>
+          <span class="badge badge-pulse">LIVE AUDIT</span>
+        </div>
+
+        <div class="card-body">
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              id="password-input" 
+              class="cyber-input" 
+              placeholder="Type or paste a password to analyze..." 
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Password input field"
+            >
+            <div class="input-actions">
+              <button type="button" id="toggle-password-btn" class="icon-btn" title="Show/Hide Password" aria-label="Toggle password visibility">
+                <svg id="eye-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg id="eye-off-icon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+              <button type="button" id="clear-input-btn" class="icon-btn" title="Clear Password" aria-label="Clear input field">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Test Presets (For Demonstration & Internship Defense) -->
+          <div class="preset-section">
+            <span class="preset-label">Quick Test Samples:</span>
+            <div class="preset-buttons">
+              <button type="button" class="preset-btn" data-sample="123456" title="Load sample: 123456">123456</button>
+              <button type="button" class="preset-btn" data-sample="password" title="Load sample: password">password</button>
+              <button type="button" class="preset-btn" data-sample="abc123" title="Load sample: abc123">abc123</button>
+              <button type="button" class="preset-btn" data-sample="Kishore@123" title="Load sample: Kishore@123">Kishore@123</button>
+              <button type="button" class="preset-btn" data-sample="CyberSecurity@2026" title="Load sample: CyberSecurity@2026">CyberSecurity@2026</button>
+            </div>
+          </div>
+
+          <!-- Live Strength Meter -->
+          <div class="meter-container">
+            <div class="meter-info">
+              <span class="meter-title">STRENGTH RATING</span>
+              <div class="rating-display">
+                <span id="strength-score-label" class="rating-badge rating-none">Awaiting Input</span>
+                <span id="strength-percent" class="rating-percent">0%</span>
+              </div>
+            </div>
+
+            <!-- 5-Segment Visual Meter Bar -->
+            <div class="meter-segments" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="strength-progressbar">
+              <div class="segment" id="seg-1" data-label="Very Weak"></div>
+              <div class="segment" id="seg-2" data-label="Weak"></div>
+              <div class="segment" id="seg-3" data-label="Medium"></div>
+              <div class="segment" id="seg-4" data-label="Strong"></div>
+              <div class="segment" id="seg-5" data-label="Very Strong"></div>
+            </div>
+            
+            <div class="meter-legend">
+              <div class="legend-step step-red">
+                <span class="legend-indicator dot-red"></span>
+                <span class="legend-label">Very Weak</span>
+              </div>
+              <div class="legend-step step-orange">
+                <span class="legend-indicator dot-orange"></span>
+                <span class="legend-label">Weak</span>
+              </div>
+              <div class="legend-step step-yellow">
+                <span class="legend-indicator dot-yellow"></span>
+                <span class="legend-label">Medium</span>
+              </div>
+              <div class="legend-step step-blue">
+                <span class="legend-indicator dot-blue"></span>
+                <span class="legend-label">Strong</span>
+              </div>
+              <div class="legend-step step-green">
+                <span class="legend-indicator dot-green"></span>
+                <span class="legend-label">Very Strong</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Crack Time Quick Summary (In-Line Horizontal Bar) -->
+          <div class="crack-time-hero">
+            <div class="crack-time-left">
+              <span class="crack-time-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </span>
+              <span class="crack-label">Estimated GPU Crack Time (Hashcat 10GH/s):</span>
+            </div>
+            <div class="crack-time-right">
+              <span id="crack-time-display" class="crack-value">Instant (&lt; 1 ms)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Card: Live Metrics & Security Checklist -->
+      <section class="cyber-card analysis-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+            <h2>ANALYSIS DASHBOARD</h2>
+          </div>
+          <span class="badge badge-info">REAL-TIME TELEMETRY</span>
+        </div>
+
+        <div class="card-body">
+          <!-- Metrics 6-Grid -->
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <span class="metric-num" id="metric-length">0</span>
+              <span class="metric-name">Length</span>
+              <span class="metric-sub" id="metric-length-sub">Min. 12 ideal</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num" id="metric-upper">0</span>
+              <span class="metric-name">Uppercase</span>
+              <span class="metric-sub">A &ndash; Z</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num" id="metric-lower">0</span>
+              <span class="metric-name">Lowercase</span>
+              <span class="metric-sub">a &ndash; z</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num" id="metric-digits">0</span>
+              <span class="metric-name">Digits</span>
+              <span class="metric-sub">0 &ndash; 9</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num" id="metric-symbols">0</span>
+              <span class="metric-name">Special Chars</span>
+              <span class="metric-sub">!@#$%^&amp;*...</span>
+            </div>
+            <div class="metric-box entropy-box">
+              <span class="metric-num text-cyan" id="metric-entropy">0.0</span>
+              <span class="metric-name">Shannon Entropy</span>
+              <span class="metric-sub">Bits of Security</span>
+            </div>
+          </div>
+
+          <!-- Security Requirements Checklist (In-Line 2-Column Grid) -->
+          <div class="requirements-section">
+            <div class="requirements-header">
+              <h3 class="section-subtitle">Security Requirements Checklist</h3>
+              <span class="badge badge-info" id="checklist-counter">0 / 8 Met</span>
+            </div>
+            <ul class="checklist-items">
+              <li class="check-item" id="req-length">
+                <span class="check-icon"></span>
+                <span class="check-text">Min. 8 Chars (12+ ideal)</span>
+              </li>
+              <li class="check-item" id="req-upper">
+                <span class="check-icon"></span>
+                <span class="check-text">Uppercase Letters (A&ndash;Z)</span>
+              </li>
+              <li class="check-item" id="req-lower">
+                <span class="check-icon"></span>
+                <span class="check-text">Lowercase Letters (a&ndash;z)</span>
+              </li>
+              <li class="check-item" id="req-digits">
+                <span class="check-icon"></span>
+                <span class="check-text">Numeric Digits (0&ndash;9)</span>
+              </li>
+              <li class="check-item" id="req-symbols">
+                <span class="check-icon"></span>
+                <span class="check-text">Special Symbols (!@#$%^&amp;*)</span>
+              </li>
+              <li class="check-item" id="req-repeats">
+                <span class="check-icon"></span>
+                <span class="check-text">No Repeated Chars (aaa)</span>
+              </li>
+              <li class="check-item" id="req-sequences">
+                <span class="check-icon"></span>
+                <span class="check-text">No Sequences (123, abc)</span>
+              </li>
+              <li class="check-item" id="req-common">
+                <span class="check-icon"></span>
+                <span class="check-text">Not in Common Leaked List</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Middle Grid: Identified Weaknesses & Improvement Suggestions -->
+    <div class="dashboard-grid mid-section">
+
+      <!-- Left Card: Identified Weaknesses -->
+      <section class="cyber-card weaknesses-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <h2>IDENTIFIED WEAKNESSES</h2>
+          </div>
+          <span id="weakness-count-badge" class="badge badge-warning">0 Issues</span>
+        </div>
+
+        <div class="card-body">
+          <div id="weaknesses-list" class="feedback-list">
+            <div class="feedback-placeholder">
+              Enter a password to detect structural weaknesses, patterns, and security risks.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Card: Improvement Suggestions -->
+      <section class="cyber-card suggestions-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <h2>SUGGESTIONS FOR IMPROVEMENT</h2>
+          </div>
+          <span class="badge badge-success">RECOMMENDATIONS</span>
+        </div>
+
+        <div class="card-body">
+          <div id="suggestions-list" class="feedback-list">
+            <div class="feedback-placeholder">
+              Actionable cryptographic recommendations will be populated based on your input.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Crack Time Attack Vectors Comparison -->
+    <section class="cyber-card crack-scenarios-card">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <h2>CRACK TIME BENCHMARKS (ATTACK VECTOR COMPARISON)</h2>
+        </div>
+        <span class="badge badge-info">CRYPTANALYSIS MODEL</span>
+      </div>
+      <div class="card-body">
+        <div class="scenarios-grid">
+          <div class="scenario-box">
+            <div class="scenario-header">
+              <span class="scenario-title">Online Attack (Throttled)</span>
+              <span class="scenario-rate">~100 guesses / sec</span>
+            </div>
+            <p class="scenario-desc">Web login with CAPTCHA or rate-limiting defense.</p>
+            <div class="scenario-time" id="scenario-online">--</div>
+          </div>
+
+          <div class="scenario-box featured">
+            <div class="scenario-header">
+              <span class="scenario-title">Fast GPU Rig (Hashcat)</span>
+              <span class="scenario-rate">~10 Billion guesses / sec</span>
+            </div>
+            <p class="scenario-desc">Single modern workstation (RTX 4090) cracking fast hashes (MD5 / NTLM).</p>
+            <div class="scenario-time text-cyan" id="scenario-gpu">--</div>
+          </div>
+
+          <div class="scenario-box">
+            <div class="scenario-header">
+              <span class="scenario-title">Distributed Cluster / Supercomputer</span>
+              <span class="scenario-rate">~10 Trillion guesses / sec</span>
+            </div>
+            <p class="scenario-desc">Massive GPU cluster or botnet targeting compromised database dumps.</p>
+            <div class="scenario-time" id="scenario-supercomputer">--</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strong Password Generator Section -->
+    <section class="cyber-card generator-card">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          <h2>STRONG PASSWORD GENERATOR</h2>
+        </div>
+        <span class="badge badge-success">WEB CRYPTO API (crypto.getRandomValues)</span>
+      </div>
+
+      <div class="card-body">
+        <div class="generator-output-wrap">
+          <input 
+            type="text" 
+            id="generated-password-output" 
+            class="cyber-input generator-input font-mono" 
+            readonly 
+            placeholder="Click 'Generate Password' to create..." 
+            aria-label="Generated password output"
+          >
+          <div class="generator-actions">
+            <button type="button" id="copy-password-btn" class="cyber-btn btn-secondary" title="Copy to Clipboard">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span id="copy-btn-text">Copy</span>
+            </button>
+            <button type="button" id="use-in-analyzer-btn" class="cyber-btn btn-accent" title="Send to Strength Analyzer">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 11 12 14 22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              Analyze This
+            </button>
+          </div>
+        </div>
+
+        <div class="generator-controls">
+          <div class="slider-control">
+            <div class="slider-header">
+              <label for="length-slider" class="slider-label">Password Length:</label>
+              <span id="length-display" class="slider-value badge badge-info">16</span>
+            </div>
+            <input 
+              type="range" 
+              id="length-slider" 
+              min="8" 
+              max="32" 
+              value="16" 
+              class="cyber-slider"
+            >
+            <div class="slider-ticks">
+              <span>8 (Min)</span>
+              <span>16 (Recommended)</span>
+              <span>24 (Ultra)</span>
+              <span>32 (Max)</span>
+            </div>
+          </div>
+
+          <div class="options-control">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="gen-upper" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Uppercase (A&ndash;Z)</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" id="gen-lower" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Lowercase (a&ndash;z)</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" id="gen-digits" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Numbers (0&ndash;9)</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" id="gen-symbols" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Symbols (!@#$%^&amp;*)</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" id="gen-ambiguous">
+              <span class="checkmark"></span>
+              <span class="label-text">Avoid Ambiguous (0, O, 1, l, I)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="generator-footer">
+          <button type="button" id="generate-btn" class="cyber-btn btn-primary btn-lg">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            Generate Secure Password
+          </button>
+          <span class="generator-note">Entropy of Generated Output: <strong id="gen-entropy-preview" class="text-cyan">~95.2 bits</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educational Cybersecurity Section -->
+    <div class="dashboard-grid educational-section">
+
+      <!-- Module 1: Shannon Entropy & Math -->
+      <section class="cyber-card edu-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <h2>EDUCATIONAL: PASSWORD ENTROPY</h2>
+          </div>
+          <span class="badge badge-info">THEORY</span>
+        </div>
+        <div class="card-body edu-content">
+          <p><strong>Password Entropy</strong> measures the unpredictability of a password, quantified in <strong>bits</strong>. It represents the logarithm (base 2) of the total possible password keyspace:</p>
+          <div class="code-formula">
+            <code>Entropy (H) = L &times; log<sub>2</sub>(R)</code>
+          </div>
+          <ul class="edu-list">
+            <li><strong>L</strong> = Password length (number of characters).</li>
+            <li><strong>R</strong> = Size of the character pool (lowercase = 26, mixed alphanumeric = 62, full symbols = 95).</li>
+            <li><strong>Keyspace</strong> = <code>R<sup>L</sup></code> total combinations. Each additional character increases keyspace exponentially!</li>
+          </ul>
+          <div class="entropy-table-wrap">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Entropy (Bits)</th>
+                  <th>Classification</th>
+                  <th>Crack Resistance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>&lt; 28 bits</td>
+                  <td><span class="text-red">Very Weak</span></td>
+                  <td>Instant crack (seconds/minutes)</td>
+                </tr>
+                <tr>
+                  <td>28 &ndash; 35 bits</td>
+                  <td><span class="text-orange">Weak</span></td>
+                  <td>Vulnerable to simple wordlists</td>
+                </tr>
+                <tr>
+                  <td>36 &ndash; 59 bits</td>
+                  <td><span class="text-yellow">Medium</span></td>
+                  <td>Moderate defense against casual probes</td>
+                </tr>
+                <tr>
+                  <td>60 &ndash; 79 bits</td>
+                  <td><span class="text-blue">Strong</span></td>
+                  <td>Resilient against fast GPU rigs</td>
+                </tr>
+                <tr>
+                  <td>&ge; 80 bits</td>
+                  <td><span class="text-green">Very Strong</span></td>
+                  <td>Cryptographically robust (&gt; centuries)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Module 2: Security Best Practices & Defense in Depth -->
+      <section class="cyber-card edu-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <h2>PRACTICAL SECURITY RECOMMENDATIONS</h2>
+          </div>
+          <span class="badge badge-success">BEST PRACTICES</span>
+        </div>
+        <div class="card-body edu-content">
+          <div class="security-tips-grid">
+            <div class="tip-card">
+              <div class="tip-icon text-cyan">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <div class="tip-body">
+                <h4>Length Over Complexity</h4>
+                <p>A 16-character passphrase composed of random words has vastly higher entropy than a complex 8-character string.</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon text-blue">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+              </div>
+              <div class="tip-body">
+                <h4>Never Reuse Passwords</h4>
+                <p>Credential stuffing bots automatically test credentials leaked from one compromised service across thousands of others.</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon text-green">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <div class="tip-body">
+                <h4>Use a Password Manager</h4>
+                <p>Store cryptographically random, unique credentials in open-source or audited vaults (Bitwarden, 1Password, KeePass).</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon text-yellow">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div class="tip-body">
+                <h4>Enable 2FA / FIDO2 Passkeys</h4>
+                <p>Hardware security keys (YubiKey) or TOTP authenticator apps prevent account takeover even if passwords are leaked.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Verification & Internship Test Suite Section -->
+    <section class="cyber-card test-suite-card">
+      <div class="card-header">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <h2>AUTOMATED INTERNSHIP VERIFICATION SUITE</h2>
+        </div>
+        <button type="button" id="run-all-tests-btn" class="cyber-btn btn-accent btn-sm">
+          Run Verification Tests
+        </button>
+      </div>
+      <div class="card-body">
+        <p class="test-suite-intro">
+          This automated test matrix verifies the application against the 6 standardized benchmark cases required for the internship evaluation:
+        </p>
+        <div class="table-responsive">
+          <table class="cyber-table test-results-table">
+            <thead>
+              <tr>
+                <th>Test Password</th>
+                <th>Length</th>
+                <th>Calculated Rating</th>
+                <th>Expected Outcome</th>
+                <th>Identified Patterns</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="test-matrix-body">
+              <tr data-test-pass="123456">
+                <td><code>123456</code></td>
+                <td>6</td>
+                <td><span class="rating-badge rating-very-weak">Very Weak</span></td>
+                <td>Very Weak (Short, all numeric, sequential, common list)</td>
+                <td>Sequential digits (123456), Dictionary match</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+              <tr data-test-pass="password">
+                <td><code>password</code></td>
+                <td>8</td>
+                <td><span class="rating-badge rating-very-weak">Very Weak</span></td>
+                <td>Very Weak (Top common word, single character type)</td>
+                <td>Dictionary match, Only lowercase</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+              <tr data-test-pass="abc123">
+                <td><code>abc123</code></td>
+                <td>6</td>
+                <td><span class="rating-badge rating-very-weak">Very Weak</span></td>
+                <td>Very Weak (Sequential letters + numbers, short)</td>
+                <td>Sequential 'abc', sequential '123'</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+              <tr data-test-pass="Kishore@123">
+                <td><code>Kishore@123</code></td>
+                <td>11</td>
+                <td><span class="rating-badge rating-medium">Medium</span></td>
+                <td>Medium (Mixed charset, but predictable 'Name@123' pattern)</td>
+                <td>Sequential digits '123', common suffix pattern</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+              <tr data-test-pass="CyberSecurity@2026">
+                <td><code>CyberSecurity@2026</code></td>
+                <td>19</td>
+                <td><span class="rating-badge rating-strong">Strong</span></td>
+                <td>Strong / Very Strong (19 chars, Upper, Lower, Symbol, Digits)</td>
+                <td>Dictionary word base, year suffix</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+              <tr data-test-pass="RANDOM_GENERATED">
+                <td><code>kP9#mX2$vL8*qR4&amp;</code></td>
+                <td>16</td>
+                <td><span class="rating-badge rating-very-strong">Very Strong</span></td>
+                <td>Very Strong (Crypto-random, 16+ chars, full charset, &gt;90 bits entropy)</td>
+                <td>No predictable patterns detected</td>
+                <td><span class="badge badge-success">READY</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="cyber-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <p><strong>Cybersecurity Internship Capstone Project</strong> &bull; Password Security &amp; Entropy Analyzer</p>
+        <p class="footer-disclaimer">
+          Educational Notice: Strength ratings and crack times are mathematical estimates based on entropy models ($H = L \log_2 R$). Uniqueness and breach verification requires privacy-preserving k-Anonymity APIs (e.g. HaveIBeenPwned). No raw passwords are ever stored.
+        </p>
+      </div>
+      <div class="footer-right">
+        <div class="tech-stack-tags">
+          <span class="tech-tag">HTML5</span>
+          <span class="tech-tag">CSS3</span>
+          <span class="tech-tag">Vanilla JS</span>
+          <span class="tech-tag">Web Crypto API</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="cyber-toast" role="alert" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
